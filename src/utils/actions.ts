@@ -3,22 +3,13 @@
 import { redirect } from 'next/navigation'
 import prisma from './prisma'
 
-export const createCar = async (formData: FormData) => {
-  const modelId = formData.get('modelId')?.toString()
-  const brandId = formData.get('brandId')?.toString()
-  const description = formData.get('description')?.toString()
-
-  if (!modelId || !brandId || !description) {
-    return
-  }
-
+export const createCar = async ({ brand, model, description }: any) => {
   await prisma.car.create({
     data: {
-      modelId: modelId,
-      brandId: brandId,
+      modelId: model,
+      brandId: brand,
       description: description,
     },
   })
-
-  redirect('/')
+  console.log('car created: ', JSON.stringify({ brand, model, description }))
 }

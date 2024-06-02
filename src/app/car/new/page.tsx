@@ -1,25 +1,19 @@
 import NewCarForm from '@/components/NewCarForm'
 import prisma from '@/utils/prisma'
+import { Box } from '@mui/material'
 
-const fetchBrands = async () => {
-  const brands = await prisma.brand.findMany()
-  return brands
-}
+const fetchBrands = async () => await prisma.brand.findMany()
 
-const fetchModels = async () => {
-  const models = await prisma.carModel.findMany()
-  return models
-}
+const fetchModels = async () => await prisma.carModel.findMany()
 
 const NewCarPage = async () => {
   const brands = await fetchBrands()
   const models = await fetchModels()
 
   return (
-    <div>
-      New Car
+    <Box display="flex" justifyContent="center">
       <NewCarForm brands={brands} models={models} />
-    </div>
+    </Box>
   )
 }
 
