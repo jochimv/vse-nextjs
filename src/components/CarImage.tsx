@@ -21,18 +21,19 @@ const CarImage = ({ car }: any) => {
     car?.model.name || '',
   )
 
-  console.log('car: ', JSON.stringify(car))
-
   return isLoading ? (
-    <Skeleton variant="rectangular" width={800} height={500} />
+    <Skeleton variant="rectangular" width={600} height={400} sx={{ mt: 2 }} />
   ) : (
     <div style={{ width: '100%', height: 'auto', marginTop: '20px' }}>
       <Image
         src={imageUrl}
         alt={`${car?.brand?.name} ${car?.model?.name}`}
-        width={300}
-        height={200}
-        layout="responsive"
+        width={400}
+        height={300}
+        style={{
+          width: '100%',
+          height: 'auto',
+        }}
       />
     </div>
   )

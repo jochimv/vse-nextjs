@@ -80,7 +80,6 @@ const NewCarForm = ({
             label="Model"
             onChange={handleChange}
             name="model"
-            disabled={values.brand === ''}
           >
             {filteredModels.map((model: CarModel) => (
               <MenuItem key={model.id} value={model.id}>
@@ -94,18 +93,13 @@ const NewCarForm = ({
           value={values.description}
           name="description"
           required={true}
-          disabled={values.brand === '' || values.model === ''}
           label="Description"
         />
         <Button
           type="submit"
           variant="contained"
           sx={{ width: '50%' }}
-          disabled={
-            values.brand === '' ||
-            values.model === '' ||
-            values.description === ''
-          }
+          disabled={Object.keys(values).some((key) => !values[key])}
         >
           Submit
         </Button>

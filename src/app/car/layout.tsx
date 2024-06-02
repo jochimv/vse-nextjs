@@ -5,6 +5,7 @@ import { Box } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import theme from '@/styling'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import Appbar from '@/components/Appbar'
 
 const queryClient = new QueryClient()
 
@@ -18,7 +19,13 @@ export default function RootLayout({
       <AppRouterCacheProvider>
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
-            <Box component="body" display="flex" justifyContent="center">
+            <Box
+              component="body"
+              display="flex"
+              justifyContent="center"
+              mt={10}
+            >
+              <Appbar />
               {children}
             </Box>
           </QueryClientProvider>

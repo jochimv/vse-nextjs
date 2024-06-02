@@ -1,5 +1,4 @@
 import prisma from '@/utils/prisma'
-import Link from 'next/link'
 import { Stack, Typography } from '@mui/material'
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
@@ -25,7 +24,6 @@ const CarDetailPage = async ({ params }: { params: { id: string } }) => {
   const car = await fetchCarDetail(params.id)
   return (
     <div>
-      <Link href={'/'}>Home</Link>
       <Stack direction="row" spacing={1} alignItems="center">
         <HealthAndSafetyIcon fontSize="large" sx={{ color: grey[600] }} />
         <Typography>{car?.brand.name}</Typography>
