@@ -25,6 +25,7 @@ model Car {
   updatedAt   DateTime  @updatedAt
   condition   String
   adName      String
+  imageSrc    String
 }
 
 model Currency {

@@ -6,7 +6,7 @@ const nextConfig = {
     UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY,
   },
   images: {
-    domains: ['images.unsplash.com'],
+    domains: ['localhost','127.0.0.1'],
   },
 };
 

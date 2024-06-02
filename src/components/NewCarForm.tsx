@@ -16,8 +16,9 @@ import {
   Stack,
 } from '@mui/material'
 import { FormikValues, useFormik } from 'formik'
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 import useModal from '@/hooks/useModal'
+import axios from 'axios'
 
 const NewCarForm = ({
   models,
@@ -29,6 +30,32 @@ const NewCarForm = ({
   currencies: Currency[]
 }) => {
   const { open, handleOpen, handleClose } = useModal()
+  const fileInput = useRef<HTMLInputElement>(null)
+
+  async function uploadFile() {
+    try {
+      const formData = new FormData()
+      formData.append('file', fileInput?.current?.files?.[0]!)
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Error uploading file:', errorData)
+        return
+      }
+
+      const result = await response.json()
+      console.log('result: ', result)
+      return result
+    } catch (error) {
+      console.error('Error during upload:', error)
+    }
+  }
+
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: {
       brand: '',
@@ -41,7 +68,9 @@ const NewCarForm = ({
       adName: '',
     },
     onSubmit: async (data: FormikValues, { resetForm }) => {
-      await createCar(data)
+      console.log('file:', fileInput?.current?.files?.[0]!)
+      const { imageSrc } = await uploadFile()
+      await createCar({ ...data, imageSrc })
       resetForm()
       handleOpen()
     },
@@ -55,7 +84,11 @@ const NewCarForm = ({
     <>
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={(event) => {
+          event.preventDefault()
+          console.log('values.file: ', JSON.stringify(values.file))
+          handleSubmit()
+        }}
         display="flex"
         flexDirection="column"
         gap={2}
@@ -167,6 +200,7 @@ const NewCarForm = ({
           name="city"
           label="City"
         />
+        <input id="file" name="file" type="file" ref={fileInput} />
         <Button
           type="submit"
           variant="contained"
