@@ -10,7 +10,6 @@ const NewCarPage = async () => {
   const brands = await fetchBrands()
   const models = await fetchModels()
   const currencies = await fetchCurrencies()
-  console.log('currencies: ', JSON.stringify(currencies))
 
   return <NewCarForm brands={brands} models={models} currencies={currencies} />
 }

@@ -1,6 +1,6 @@
 'use client'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
-import '../globals.css'
+import './globals.css'
 import { Box } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import theme from '@/styling'
