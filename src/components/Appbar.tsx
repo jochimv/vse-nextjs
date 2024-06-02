@@ -6,7 +6,10 @@ const Appbar = () => {
     <AppBar position="absolute">
       <Toolbar sx={{ justifyContent: 'flex-end', columnGap: 1 }}>
         <Button color="inherit" component={Link} href="/">
-          Home
+          Car offers
+        </Button>
+        <Button color="inherit" component={Link} href="/about-us">
+          About us
         </Button>
         <Button color="inherit" component={Link} href="/car/new">
           New car
