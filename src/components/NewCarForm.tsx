@@ -1,6 +1,7 @@
 'use client'
 import { createCar } from '@/utils/actions'
-import { Brand, CarModel } from '@prisma/client'
+import { Brand, CarModel, Currency } from '@prisma/client'
+
 import {
   Button,
   FormControl,
@@ -11,8 +12,8 @@ import {
   TextField,
   Typography,
   Modal,
-  Backdrop,
   Fade,
+  Stack,
 } from '@mui/material'
 import { FormikValues, useFormik } from 'formik'
 import { useMemo } from 'react'
@@ -21,16 +22,23 @@ import useModal from '@/hooks/useModal'
 const NewCarForm = ({
   models,
   brands,
+  currencies,
 }: {
   models: CarModel[]
   brands: Brand[]
+  currencies: Currency[]
 }) => {
   const { open, handleOpen, handleClose } = useModal()
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: {
       brand: '',
       model: '',
-      description: '',
+      city: '',
+      condition: '',
+      year: '',
+      currency: '',
+      price: '',
+      adName: '',
     },
     onSubmit: async (data: FormikValues, { resetForm }) => {
       await createCar(data)
@@ -54,6 +62,13 @@ const NewCarForm = ({
         width="30%"
       >
         <Typography variant="h4">Add a new car</Typography>
+        <TextField
+          onChange={handleChange}
+          value={values.adName}
+          name="adName"
+          required={true}
+          label="Advertisement name"
+        />
         <FormControl fullWidth>
           <InputLabel id="select-brand-label">Select a brand</InputLabel>
           <Select
@@ -90,10 +105,67 @@ const NewCarForm = ({
         </FormControl>
         <TextField
           onChange={handleChange}
-          value={values.description}
-          name="description"
+          value={values.year}
+          name="year"
           required={true}
-          label="Description"
+          label="Year of production"
+          inputProps={{
+            inputMode: 'numeric',
+            pattern: '(19[0-9]{2}|20[0-9]{2}|2100)',
+          }}
+        />
+        <FormControl fullWidth>
+          <InputLabel id="select-condition-label">
+            Select a condition
+          </InputLabel>
+          <Select
+            labelId="select-condition-label"
+            id="select-condition-label"
+            value={values.condition}
+            label="Condition"
+            onChange={handleChange}
+            name="condition"
+          >
+            <MenuItem value="New">New</MenuItem>
+            <MenuItem value="Excellent">Excellent</MenuItem>
+            <MenuItem value="Good">Good</MenuItem>
+            <MenuItem value="Fair">Fair</MenuItem>
+            <MenuItem value="For repair">For repair</MenuItem>
+            <MenuItem value="For parts">For parts</MenuItem>
+          </Select>
+        </FormControl>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <TextField
+            onChange={handleChange}
+            value={values.price}
+            name="price"
+            required={true}
+            label="Price"
+            inputProps={{ inputMode: 'numeric', pattern: '[1-9][0-9]*' }}
+          />
+          <FormControl fullWidth>
+            <InputLabel id="select-currency-label">Select currency</InputLabel>
+            <Select
+              labelId="select-currency-label"
+              id="select-currency-label"
+              value={values.currency}
+              label="Currency"
+              onChange={handleChange}
+              name="currency"
+            >
+              {currencies.map((currency: Currency) => (
+                <MenuItem key={currency.id} value={currency.id}>
+                  {currency.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Stack>
+        <TextField
+          onChange={handleChange}
+          value={values.city}
+          name="city"
+          label="City"
         />
         <Button
           type="submit"

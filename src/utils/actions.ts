@@ -3,13 +3,22 @@
 import { redirect } from 'next/navigation'
 import prisma from './prisma'
 
-export const createCar = async ({ brand, model, description }: any) => {
+export const createCar = async ({
+  brand,
+  model,
+  currency,
+  price,
+  year,
+  ...other
+}: any) => {
   await prisma.car.create({
     data: {
       modelId: model,
       brandId: brand,
-      description: description,
+      currencyId: currency,
+      price: parseFloat(price),
+      year: parseInt(year),
+      ...other,
     },
   })
-  console.log('car created: ', JSON.stringify({ brand, model, description }))
 }

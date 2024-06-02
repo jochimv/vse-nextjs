@@ -11,18 +11,26 @@ datasource db {
 }
 
 model Car {
-  id          String   @id @default(uuid())
-  description String?
-  location    String?
-  price       Float?
-  color       String?
-  year        Int?
-  model       CarModel @relation(fields: [modelId], references: [id])
+  id          String    @id @default(uuid())
+  price       Float
+  currencyId  String
+  currency    Currency @relation(fields: [currencyId], references: [id])
+  city        String
+  year        Int
+  model       CarModel  @relation(fields: [modelId], references: [id])
   modelId     String
-  brand       Brand    @relation(fields: [brandId], references: [id])
+  brand       Brand     @relation(fields: [brandId], references: [id])
   brandId     String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  condition   String
+  adName      String
+}
+
+model Currency {
+  id   String @id @default(uuid())
+  name String
+  car  Car[]
 }
 
 model Brand {
