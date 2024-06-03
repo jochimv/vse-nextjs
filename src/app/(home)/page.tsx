@@ -1,3 +1,4 @@
+import { Container, Typography } from '@mui/material'
 import CarList from '@/components/CarList'
 import prisma from '@/utils/prisma'
 
@@ -6,6 +7,7 @@ const getCars = async () => {
     include: {
       model: true,
       brand: true,
+      currency: true,
     },
   })
   return cars
@@ -14,10 +16,12 @@ const getCars = async () => {
 const HomePage = async () => {
   const cars = await getCars()
   return (
-    <div>
-      Home Page
+    <Container>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Home Page
+      </Typography>
       <CarList cars={cars} />
-    </div>
+    </Container>
   )
 }
 

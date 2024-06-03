@@ -24,6 +24,7 @@ export default function RootLayout({
               display="flex"
               justifyContent="center"
               mt={10}
+              mb={4}
             >
               <Appbar />
               {children}
