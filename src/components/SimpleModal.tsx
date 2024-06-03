@@ -1,5 +1,4 @@
 import { Box, Button, Fade, Modal, Typography } from '@mui/material'
-import useActionModal from '@/hooks/useActionModal'
 
 const SimpleModal = ({
   title,
@@ -25,6 +24,7 @@ const SimpleModal = ({
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
+            borderRadius: 1,
           }}
         >
           <Typography variant="h6" component="h2">

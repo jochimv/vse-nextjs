@@ -15,6 +15,7 @@ const CarImage = ({ car }: any) => {
         style={{
           width: '400px',
           height: 'auto',
+          borderRadius: '4px',
         }}
       />
     </div>
