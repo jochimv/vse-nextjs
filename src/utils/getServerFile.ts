@@ -1,4 +1,4 @@
-import { extractFileName } from '@/utils/extractFileName'
+import extractFileName from '@/utils/extractFileName'
 
 const getServerFile = (absolutePath: string) =>
   `/uploads/` + extractFileName(absolutePath)

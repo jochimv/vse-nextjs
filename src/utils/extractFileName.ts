@@ -1,2 +1,3 @@
-export const extractFileName = (fullPath: string) =>
-  fullPath.split(/[/\\]/).pop()
+const extractFileName = (fullPath: string) => fullPath.split(/[/\\]/).pop()
+
+export default extractFileName
