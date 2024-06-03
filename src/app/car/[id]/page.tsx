@@ -1,3 +1,4 @@
+'use server'
 import prisma from '@/utils/prisma'
 import { Stack, Typography } from '@mui/material'
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'
@@ -9,6 +10,7 @@ import ElectricBoltIcon from '@mui/icons-material/ElectricBolt'
 import LocalOfferIcon from '@mui/icons-material/LocalOffer'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
+import DeleteButton from '@/components/DeleteButton'
 
 const fetchCarDetail = async (id: string) => {
   const car = await prisma.car.findUnique({
@@ -61,6 +63,7 @@ const CarDetailPage = async ({ params }: { params: { id: string } }) => {
         </div>
       </Stack>
       {car && <CarImage car={car} />}
+      <DeleteButton car={car} />
     </div>
   )
 }

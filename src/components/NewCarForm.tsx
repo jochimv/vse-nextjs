@@ -16,9 +16,9 @@ import {
   Stack,
 } from '@mui/material'
 import { FormikValues, useFormik } from 'formik'
-import { useMemo, useRef } from 'react'
-import useModal from '@/hooks/useModal'
-import axios from 'axios'
+import { useMemo, useRef, useState } from 'react'
+import SimpleModal from '@/components/SimpleModal'
+import useActionModal from '@/hooks/useActionModal'
 
 const NewCarForm = ({
   models,
@@ -29,7 +29,8 @@ const NewCarForm = ({
   brands: Brand[]
   currencies: Currency[]
 }) => {
-  const { open, handleOpen, handleClose } = useModal()
+  const { open, handleOpen, handleClose } = useActionModal()
+  const [isImageUploaded, setIsImageUploaded] = useState(false)
   const fileInput = useRef<HTMLInputElement>(null)
 
   async function uploadFile() {
@@ -48,9 +49,7 @@ const NewCarForm = ({
         return
       }
 
-      const result = await response.json()
-      console.log('result: ', result)
-      return result
+      return await response.json()
     } catch (error) {
       console.error('Error during upload:', error)
     }
@@ -68,7 +67,6 @@ const NewCarForm = ({
       adName: '',
     },
     onSubmit: async (data: FormikValues, { resetForm }) => {
-      console.log('file:', fileInput?.current?.files?.[0]!)
       const { imageSrc } = await uploadFile()
       await createCar({ ...data, imageSrc })
       resetForm()
@@ -86,7 +84,6 @@ const NewCarForm = ({
         component="form"
         onSubmit={(event) => {
           event.preventDefault()
-          console.log('values.file: ', JSON.stringify(values.file))
           handleSubmit()
         }}
         display="flex"
@@ -200,41 +197,31 @@ const NewCarForm = ({
           name="city"
           label="City"
         />
-        <input id="file" name="file" type="file" ref={fileInput} />
+        <input
+          id="file"
+          name="file"
+          type="file"
+          ref={fileInput}
+          onChange={() => setIsImageUploaded(true)}
+        />
         <Button
           type="submit"
           variant="contained"
           sx={{ width: '50%' }}
-          disabled={Object.keys(values).some((key) => !values[key])}
+          disabled={
+            Object.keys(values).some((key) => !values[key]) || !isImageUploaded
+          }
         >
           Submit
         </Button>
       </Box>
-
-      <Modal open={open} onClose={handleClose} closeAfterTransition>
-        <Fade in={open}>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: 400,
-              bgcolor: 'background.paper',
-              boxShadow: 24,
-              p: 4,
-            }}
-          >
-            <Typography variant="h6" component="h2">
-              New Car Created
-            </Typography>
-            <Typography>The new car has been successfully created!</Typography>
-            <Button onClick={handleClose} variant="contained" sx={{ mt: 2 }}>
-              Close
-            </Button>
-          </Box>
-        </Fade>
-      </Modal>
+      <SimpleModal
+        buttonDescription="close"
+        description="The new car has been successfully created!"
+        title="New Car Created"
+        open={open}
+        handleClose={handleClose}
+      />
     </>
   )
 }
