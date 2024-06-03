@@ -1,7 +1,6 @@
 'use client'
-import { createCar } from '@/utils/actions'
-import { Currency } from '@prisma/client'
-
+import { createCar, updateCar } from '@/utils/actions'
+import { Currency, Car } from '@prisma/client'
 import {
   Button,
   FormControl,
@@ -11,16 +10,20 @@ import {
   Box,
   TextField,
   Typography,
-  Modal,
-  Fade,
   Stack,
 } from '@mui/material'
 import { FormikValues, useFormik } from 'formik'
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import SimpleModal from '@/components/SimpleModal'
 import useActionModal from '@/hooks/useActionModal'
 
-const NewCarForm = ({ currencies }: { currencies: Currency[] }) => {
+const CarForm = ({
+  car,
+  currencies,
+}: {
+  car?: Car
+  currencies: Currency[]
+}) => {
   const { open, handleOpen, handleClose } = useActionModal()
   const [isImageUploaded, setIsImageUploaded] = useState(false)
   const fileInput = useRef<HTMLInputElement>(null)
@@ -47,24 +50,42 @@ const NewCarForm = ({ currencies }: { currencies: Currency[] }) => {
     }
   }
 
-  const { values, handleChange, handleSubmit } = useFormik({
+  const { values, handleChange, handleSubmit, setValues } = useFormik({
     initialValues: {
-      brand: '',
-      model: '',
-      city: '',
-      condition: '',
-      year: '',
-      currency: '',
-      price: '',
-      adName: '',
+      brand: car?.brand || '',
+      model: car?.model || '',
+      city: car?.city || '',
+      condition: car?.condition || '',
+      year: car?.year || '',
+      currency: car?.currencyId || '',
+      price: car?.price || '',
+      adName: car?.adName || '',
     },
-    onSubmit: async (data: FormikValues, { resetForm }) => {
-      const { imageSrc } = await uploadFile()
-      await createCar({ ...data, imageSrc })
-      resetForm()
+    onSubmit: async (data: FormikValues) => {
+      if (car) {
+        await updateCar({ ...data, id: car.id })
+      } else {
+        const { imageSrc } = await uploadFile()
+        await createCar({ ...data, imageSrc })
+      }
       handleOpen()
     },
   })
+
+  useEffect(() => {
+    if (car) {
+      setValues({
+        brand: car.brand,
+        model: car.model,
+        city: car.city,
+        condition: car.condition,
+        year: car.year,
+        currency: car.currencyId,
+        price: car.price,
+        adName: car.adName,
+      })
+    }
+  }, [car, setValues])
 
   return (
     <>
@@ -79,7 +100,9 @@ const NewCarForm = ({ currencies }: { currencies: Currency[] }) => {
         gap={2}
         width="30%"
       >
-        <Typography variant="h4">Add a new car</Typography>
+        <Typography variant="h4">
+          {car ? 'Edit Car' : 'Add a New Car'}
+        </Typography>
         <TextField
           onChange={handleChange}
           value={values.adName}
@@ -89,14 +112,14 @@ const NewCarForm = ({ currencies }: { currencies: Currency[] }) => {
         />
         <TextField
           onChange={handleChange}
-          values={values.brand}
+          value={values.brand}
           name="brand"
           required
           label="Brand"
         />
         <TextField
           onChange={handleChange}
-          values={values.model}
+          value={values.model}
           name="model"
           required
           label="Model"
@@ -164,6 +187,7 @@ const NewCarForm = ({ currencies }: { currencies: Currency[] }) => {
           value={values.city}
           name="city"
           label="City"
+          required
         />
         <input
           id="file"
@@ -177,16 +201,21 @@ const NewCarForm = ({ currencies }: { currencies: Currency[] }) => {
           variant="contained"
           sx={{ width: '50%' }}
           disabled={
-            Object.keys(values).some((key) => !values[key]) || !isImageUploaded
+            Object.keys(values).some((key) => !values[key]) ||
+            (car ? false : !isImageUploaded)
           }
         >
-          Submit
+          {car ? 'Update Car' : 'Submit'}
         </Button>
       </Box>
       <SimpleModal
         buttonDescription="close"
-        description="The new car has been successfully created!"
-        title="New Car Created"
+        description={
+          car
+            ? 'The car details have been successfully updated!'
+            : 'The new car has been successfully created!'
+        }
+        title={car ? 'Car Updated' : 'New Car Created'}
         open={open}
         handleClose={handleClose}
       />
@@ -194,4 +223,4 @@ const NewCarForm = ({ currencies }: { currencies: Currency[] }) => {
   )
 }
 
-export default NewCarForm
+export default CarForm

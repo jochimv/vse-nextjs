@@ -1,8 +1,5 @@
 'use server'
-
-import { redirect } from 'next/navigation'
 import prisma from './prisma'
-import axios from 'axios'
 
 export const createCar = async ({ currency, price, year, ...other }: any) => {
   await prisma.car.create({
@@ -11,6 +8,17 @@ export const createCar = async ({ currency, price, year, ...other }: any) => {
       price: parseFloat(price),
       year: parseInt(year),
       ...other,
+    },
+  })
+}
+
+export const updateCar = async (carData: Partial<Car> & { id: string }) => {
+  const { id, currency, ...data } = carData
+  return await prisma.car.update({
+    where: { id },
+    data: {
+      currencyId: currency,
+      ...data,
     },
   })
 }

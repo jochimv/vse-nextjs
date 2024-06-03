@@ -6,7 +6,7 @@ import getServerFile from '@/utils/getServerFile'
 
 const CarItem = ({ car }: { car: CarWithDeps }) => {
   return (
-    <Link href={`car/${car.id}`} className="cursor-pointer">
+    <Link href={`car/detail/${car.id}`} className="cursor-pointer">
       <Card sx={{ maxWidth: 345, margin: 2 }}>
         <div
           style={{

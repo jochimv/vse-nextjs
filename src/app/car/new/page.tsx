@@ -1,4 +1,4 @@
-import NewCarForm from '@/components/NewCarForm'
+import NewCarForm from '@/components/CarForm'
 import prisma from '@/utils/prisma'
 
 const fetchCurrencies = async () => await prisma.currency.findMany()
