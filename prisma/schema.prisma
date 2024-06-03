@@ -17,10 +17,8 @@ model Car {
   currency    Currency @relation(fields: [currencyId], references: [id])
   city        String
   year        Int
-  model       CarModel  @relation(fields: [modelId], references: [id])
-  modelId     String
-  brand       Brand     @relation(fields: [brandId], references: [id])
-  brandId     String
+  model       String
+  brand       String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   condition   String
@@ -32,23 +30,4 @@ model Currency {
   id   String @id @default(uuid())
   name String
   car  Car[]
-}
-
-model Brand {
-  id        String     @id @default(cuid())
-  name      String     @unique
-  models    CarModel[]
-  cars      Car[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-}
-
-model CarModel {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  cars      Car[]
-  brand     Brand    @relation(fields: [brandId], references: [id])
-  brandId   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

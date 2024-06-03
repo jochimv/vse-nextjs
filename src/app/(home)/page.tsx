@@ -5,8 +5,6 @@ import prisma from '@/utils/prisma'
 const getCars = async () => {
   const cars = await prisma.car.findMany({
     include: {
-      model: true,
-      brand: true,
       currency: true,
     },
   })

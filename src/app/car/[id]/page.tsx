@@ -18,8 +18,6 @@ const fetchCarDetail = async (id: string) => {
       id: id,
     },
     include: {
-      model: true,
-      brand: true,
       currency: true,
     },
   })
@@ -35,11 +33,11 @@ const CarDetailPage = async ({ params }: { params: { id: string } }) => {
         <div>
           <Stack direction="row" spacing={1} alignItems="center">
             <HealthAndSafetyIcon fontSize="large" sx={{ color: grey[600] }} />
-            <Typography>{car?.brand.name}</Typography>
+            <Typography>{car?.brand}</Typography>
           </Stack>
           <Stack direction="row" spacing={1} alignItems="center">
             <DirectionsCarIcon fontSize="large" sx={{ color: grey[600] }} />
-            <Typography>{car?.model.name}</Typography>
+            <Typography>{car?.model}</Typography>
           </Stack>
           <Stack direction="row" spacing={1} alignItems="center">
             <AccessTimeIcon fontSize="large" sx={{ color: grey[600] }} />

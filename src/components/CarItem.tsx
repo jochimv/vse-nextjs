@@ -27,10 +27,10 @@ const CarItem = ({ car }: { car: CarWithDeps }) => {
         </div>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {car.model.name}
+            {car.model}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {car.brand.name} - {car.year}
+            {car.brand} - {car.year}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {car.city}

@@ -1,6 +1,6 @@
 'use client'
 import { createCar } from '@/utils/actions'
-import { Brand, CarModel, Currency } from '@prisma/client'
+import { Currency } from '@prisma/client'
 
 import {
   Button,
@@ -20,15 +20,7 @@ import { useMemo, useRef, useState } from 'react'
 import SimpleModal from '@/components/SimpleModal'
 import useActionModal from '@/hooks/useActionModal'
 
-const NewCarForm = ({
-  models,
-  brands,
-  currencies,
-}: {
-  models: CarModel[]
-  brands: Brand[]
-  currencies: Currency[]
-}) => {
+const NewCarForm = ({ currencies }: { currencies: Currency[] }) => {
   const { open, handleOpen, handleClose } = useActionModal()
   const [isImageUploaded, setIsImageUploaded] = useState(false)
   const fileInput = useRef<HTMLInputElement>(null)
@@ -74,10 +66,6 @@ const NewCarForm = ({
     },
   })
 
-  const filteredModels = useMemo(() => {
-    return models.filter((model: CarModel) => model.brandId === values.brand)
-  }, [values.brand, models])
-
   return (
     <>
       <Box
@@ -99,40 +87,20 @@ const NewCarForm = ({
           required={true}
           label="Advertisement name"
         />
-        <FormControl fullWidth>
-          <InputLabel id="select-brand-label">Select a brand</InputLabel>
-          <Select
-            labelId="select-brand-label"
-            id="select-brand-label"
-            value={values.brand}
-            label="Brand"
-            onChange={handleChange}
-            name="brand"
-          >
-            {brands.map((brand: Brand) => (
-              <MenuItem key={brand.id} value={brand.id}>
-                {brand.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel id="select-model-label">Select a model</InputLabel>
-          <Select
-            labelId="select-model-label"
-            id="select-model-label"
-            value={values.model}
-            label="Model"
-            onChange={handleChange}
-            name="model"
-          >
-            {filteredModels.map((model: CarModel) => (
-              <MenuItem key={model.id} value={model.id}>
-                {model.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <TextField
+          onChange={handleChange}
+          values={values.brand}
+          name="brand"
+          required
+          label="Brand"
+        />
+        <TextField
+          onChange={handleChange}
+          values={values.model}
+          name="model"
+          required
+          label="Model"
+        />
         <TextField
           onChange={handleChange}
           value={values.year}
