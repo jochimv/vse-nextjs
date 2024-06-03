@@ -10,7 +10,7 @@ type Props = {
 
 const CarList = ({ cars }: Props) => {
   const [page, setPage] = useState(1)
-  const itemsPerPage = 10
+  const itemsPerPage = 3
   const totalPages = Math.ceil(cars.length / itemsPerPage)
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {

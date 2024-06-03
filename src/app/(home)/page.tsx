@@ -18,9 +18,13 @@ const HomePage = async () => {
   return (
     <Container>
       <Typography variant="h4" component="h1" gutterBottom>
-        Home Page
+        Car listings
       </Typography>
-      <CarList cars={cars} />
+      {cars.length > 0 ? (
+        <CarList cars={cars} />
+      ) : (
+        <Typography variant="h6">Wow, such empty</Typography>
+      )}
     </Container>
   )
 }
