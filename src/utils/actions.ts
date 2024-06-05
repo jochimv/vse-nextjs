@@ -1,5 +1,6 @@
 'use server'
 import prisma from './prisma'
+import { Car } from '@prisma/client'
 
 export const createCar = async ({ currency, price, year, ...other }: any) => {
   await prisma.car.create({
@@ -13,11 +14,13 @@ export const createCar = async ({ currency, price, year, ...other }: any) => {
 }
 
 export const updateCar = async (carData: Partial<Car> & { id: string }) => {
-  const { id, currency, ...data } = carData
+  const { id, currency, price, year, ...data } = carData
   return await prisma.car.update({
     where: { id },
     data: {
       currencyId: currency,
+      price: parseFloat(price),
+      year: parseInt(year),
       ...data,
     },
   })
